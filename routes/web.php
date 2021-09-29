@@ -34,9 +34,12 @@ function time_elapsed_string($datetime, $full = false) {
     if (!$full) $string = array_slice($string, 0, 1);
     return $string ;
 }
-Route::get('/api_check/{id_program}', function ($id_program) {
+Route::get('/api_check/{ip}/{id_program}', function ($ip,$id_program) {
    $id = \Auth::id();
-   $ww = \App\Lol::where('id_user','=',$id)->where("id_program",'=',$id_program)->first();
+   $ww = \App\Lol::where("id_program",'=',$id_program)->where("ip",'=',$ip)->first();
+   if(\App\Lol::where("id_program",'=',$id_program)->where("ip",'=',$ip)->count() == 0){
+       return "false";
+   }
         $all["all"] = array();
 
         $split = explode(" ", $ww->created_at->toDateTimeString())[0];

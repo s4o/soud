@@ -10,20 +10,16 @@ class Save extends Component
     public $text;
     public function save(){
         $id = \Auth::id();
-        $get_all =Lol::where("id_user",'=',$id)->get()->all();
-        foreach ($get_all as $item){
-        $mm = Lol::find($item->id);
-
-
-
-        $mm->ip = $this->text;
-
-    }
-        dd($mm);
+//        $item =Lol::where("id_user",'=',$id)->get()->all()->update(['ip' =>$this->text]);
+        $affected = Lol::where("id_user",'=',$id)
+            ->update(['ip' =>$this->text]);
+        dd($affected);
 
     }
     public function render()
     {
-        return view('livewire.save');
+        $id = \Auth::id();
+        $get_all =Lol::where("id_user",'=',$id)->get()->last();
+        return view('livewire.save',compact('get_all'));
     }
 }
